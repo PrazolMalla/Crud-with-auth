@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+    font-family: "helvetica";
+    src: url('./assets/font/Helvetica.ttf');
+}
