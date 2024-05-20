@@ -67,7 +67,8 @@
             >
               Login
             </button>
-            <span class="mt-4 text-purple-color text-xl cursor-pointer">Sign Up</span>
+            <RouterLink to="/signup"><span class="mt-4 text-purple-color text-xl cursor-pointer">Sign Up</span>
+            </RouterLink>
           </div>
         </form>
       </div>
@@ -79,8 +80,9 @@
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 import axios from 'axios'
-
+import { mapActions } from 'vuex';
 export default {
+  
   data() {
     return {
       user: {
@@ -90,6 +92,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setToken','setLoggedIn']),
     login() {
       axios
         .post('http://127.0.0.1:8000/api/v1/login', {
@@ -97,13 +100,20 @@ export default {
           password: this.user.password
         })
         .then((response) => {
-          toast.success('User login Successful')
-          setTimeout(() => {
-            this.$router.push({ name: 'display' })
-          }, 1000)
+          console.log(response);
+          if(response.status ==200){
+            this.setToken(response.data.token)
+            this.setLoggedIn(true)
+            toast.success('User login Successful')
+            this.$router.push({ name: 'display' });
+          }
+          else{
+              toast.error(response.msg)
+            }
+          
         })
         .catch((error) => {
-          toast.error('Login Failed')
+          toast.error(error)
         })
     }
   }
@@ -123,74 +133,4 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
 }
-/* h1 {
-  text-align: center;
-}
-#form {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  gap: 20px;
-  width: 400px;
-  height: 500px;
-  background-color: transparent;
-  border-left: 10px solid var(--vt-c-blue);
-}
-
-
-.container {
-  width: 80vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.form-container {
-  width: 800px;
-  height: 500px;
-  background-color: white;
-  display: flex;
-  background-color: transparent;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-}
-
-input[type='text'] {
-  width: 80%;
-  height: 40px;
-  border: none;
-  border-bottom: 2px solid var(--vt-c-blue);
-}
-input[type='email'] {
-  width: 80%;
-  height: 40px;
-  border: none;
-  border-bottom: 2px solid var(--vt-c-blue);
-}
-
-input[type='radio'] {
-  margin-left: 1rem;
-  width: 20px;
-  height: 20px;
-}
-
-input:focus {
-  outline: none;
-}
-
-label {
-  font-size: 1rem;
-}
-
-.radio-label {
-  margin-left: 0.5rem;
-  margin-top: -0.5rem;
-}
-
-.buttons {
-  display: flex;
-  gap: 1rem;
-} */
 </style>

@@ -11,6 +11,5 @@ body {
 
 #app {
     display: flex;
-    gap: 2.5rem;
     width: 100vw;
 }

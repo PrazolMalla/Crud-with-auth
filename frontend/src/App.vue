@@ -1,20 +1,37 @@
 <template>
-  <div id="app" class="w-full">
+  <div id="app" class="w-full  h-screen flex flex-col">
+    <div v-if="logged">
+      <Nav/>
+    </div>
     <div class="main-container w-full">
       <RouterView />
-      <Vue3Toastify />
     </div>
   </div>
 </template>
 
 <script>
-import Vue3Toastify from 'vue3-toastify'
-import NavBar from './components/NavBar.vue'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 import { RouterView } from 'vue-router'
 import TailwindComp from './components/TailwindComp.vue'
-
+import { mapGetters } from 'vuex';
+import Nav from './components/AppNavBar.vue'
 export default {
-  data() {}
+  components:{
+    Nav,
+  },
+  data() {
+  },
+  computed: {
+    ...mapGetters(['isLoggedIn']),
+    logged() {
+      return this.isLoggedIn;
+    }
+    },
+  methods:{
+    
+  }
+  
 }
 </script>
 
